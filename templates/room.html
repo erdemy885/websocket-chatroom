@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    input[type="text"] {
+        flex: 1;
+    }
+</style>
+<div class="chat-page">
+    <div class="message-box">
+        <h2 class="chat-title">Chat Room: {{ code }}</h2>
+        <div class="messages" id="messages">
+            <!-- Existing messages will be dynamically inserted here -->
+        </div>
+        <div class="inputs">
+            <input 
+                type="text" 
+                id="message" 
+                name="message" 
+                placeholder="Type your message here..." 
+                required 
+            />
+            <button 
+                type="button" 
+                id="send-btn" 
+                class="btn send-btn" 
+                onClick="sendMessage()"
+            >
+                Send
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize WebSocket connection
+    var socketio = io();
+
+    // Select DOM elements
+    const messages = document.getElementById("messages");
+    const messageInput = document.getElementById("message");
+
+    // Function to create and append a new message to the messages container
+    const createMessage = (name, msg, time) => {
+        const content = `
+        <div class="message">
+            <span class="message-header">
+                <strong>${name}</strong> 
+                <span class="message-time">${time}</span>
+            </span>
+            <p class="message-body">${msg}</p>
+        </div>
+        `;
+        messages.innerHTML += content;
+        messages.scrollTop = messages.scrollHeight; // Scroll to the newest message
+    };
+
+    // Listen for incoming messages from the server
+    socketio.on("message", (data) => {
+        createMessage(data.name, data.message, data.time);
+    });
+
+    // Function to send a message
+    const sendMessage = () => {
+        const message = messageInput.value.trim();
+        if (message === "") return; // Do not send empty messages
+        socketio.emit("message", { data: message }); // Emit message to server
+        messageInput.value = ""; // Clear the input field
+    };
+
+    // Add a listener to detect when "Enter" is pressed
+    messageInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent the default "Enter" behavior (like form submission)
+            sendMessage(); // Trigger the sendMessage function
+        }
+    });
+
+</script>
+
+{% for msg in messages %}
+<script>
+    createMessage("{{ msg.name }}", "{{ msg.message }}", "{{ msg.time }}");
+</script>
+{% endfor %}
+{% endblock %}
