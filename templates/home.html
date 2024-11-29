@@ -49,10 +49,10 @@
 
         // Example: Add event listener for validation or future logic
         roomCodeField.addEventListener('input', () => {
-            if (roomCodeField.value.length > 6) {
-                alert('Room code should not exceed 6 characters.');
-                roomCodeField.value = roomCodeField.value.slice(0, 6); // Truncate input
-            }
+            roomCodeField.value = roomCodeField.value
+                .replace(/[^a-zA-Z]/g, '')
+                .toUpperCase()
+                .slice(0, 4);
         });
     });
 </script>
