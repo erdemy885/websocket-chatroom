@@ -38,7 +38,7 @@ def home():
         if join != False and not code:
             return render_template("home.html", error="Please enter a room code.", code=code, name=name)
         
-        room = code
+        room = code.strip().upper()
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"members": 0, "messages": []}
@@ -49,7 +49,7 @@ def home():
                 "time": date.strftime("%m/%d/%Y %I:%M:%S %p")
             }
             rooms[room]["messages"].append(content)
-        elif code not in rooms:
+        elif room not in rooms:
             return render_template("home.html", error="Room does not exist.", code=code, name=name)
         
         session["room"] = room
