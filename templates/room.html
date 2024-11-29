@@ -39,13 +39,28 @@
     const messages = document.getElementById("messages");
     const messageInput = document.getElementById("message");
 
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp * 1000); // Convert integer timestamp to milliseconds
+        const options = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+        };
+        return new Intl.DateTimeFormat("en-US", options).format(date);
+    };
+
     // Function to create and append a new message to the messages container
     const createMessage = (name, msg, time) => {
+        const formattedTime = formatTimestamp(time);
         const content = `
         <div class="message">
             <span class="message-header">
                 <strong>${name}</strong> 
-                <span class="message-time">${time}</span>
+                <span class="message-time">${formattedTime}</span>
             </span>
             <p class="message-body">${msg}</p>
         </div>

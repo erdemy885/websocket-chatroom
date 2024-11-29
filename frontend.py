@@ -42,11 +42,11 @@ def home():
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"members": 0, "messages": []}
-            date = datetime.now()
+            date = datetime.now(datetime.timezone.utc)
             content={
                 "name": name,
                 "message": "created the room",
-                "time": date.strftime("%m/%d/%Y %I:%M:%S %p")
+                "time": int(date.timestamp())
             }
             rooms[room]["messages"].append(content)
         elif room not in rooms:
