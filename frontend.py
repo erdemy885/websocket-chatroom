@@ -42,7 +42,7 @@ def home():
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"members": 0, "messages": []}
-            date = datetime.now(datetime.timezone.utc)
+            date = datetime.now(timezone.utc)
             content={
                 "name": name,
                 "message": "created the room",

@@ -11,7 +11,7 @@ def message(data):
     if room not in rooms:
         return
     
-    date = datetime.now(datetime.timezone.utc)
+    date = datetime.now(timezone.utc)
     
     content = {
         "name": session.get("name"),
@@ -32,7 +32,7 @@ def connect(auth):
     if room not in rooms:
         leave_room(room)
         return
-    date = datetime.now(datetime.timezone.utc)
+    date = datetime.now(timezone.utc)
 
     content = {
         "name": name,
@@ -58,7 +58,7 @@ def disconnect():
             del rooms[room]
             return
 
-    date = datetime.now(datetime.timezone.utc)
+    date = datetime.now(timezone.utc)
 
     content = {
         "name": name,
