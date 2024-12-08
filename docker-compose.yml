@@ -3,7 +3,7 @@ services:
     build: .
     container_name: websocket-chatroom    
     environment:
-      SECRET_KEY: "your_secret_key_here"
+      SECRET_KEY: ${SECRET_KEY}
     
     ports:
       - "5000:5000"
